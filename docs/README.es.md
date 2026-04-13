@@ -105,7 +105,7 @@ skipix/
 **⭐ ¡Apoya este proyecto de cualquier manera posible!**
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J41W702I)
-<a href="https://github.com/InlitX/skipix/stargazers"><img src="https://img.shields.io/github/stars/InlitX/skipix?style=plastic&logo=github" alt="GitHub stars" width="140"></a>
+<a href="https://github.com/InlitX/skipix/stargazers"><img src="https://img.shields.io/github/stars/InlitX/skipix?style=plastic&logo=github" alt="GitHub stars" width="115"></a>
 
 Hecho con ❤️ para la comunidad
 
