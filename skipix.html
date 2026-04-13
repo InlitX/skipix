@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skipix</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    html { height: auto; min-height: 0; overflow: hidden; }
+    body { margin: 0; padding: 0; height: auto; min-height: 0; display: flex; flex-direction: column; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0c0c0c;
+      --card: #161616;
+      --card-hover: #1f1f1f;
+      --border: #2a2a2a;
+      --text: #fafafa;
+      --text-2: #a1a1aa;
+      --text-3: #71717a;
+      --green: #22c55e;
+      --green-dim: rgba(34, 197, 94, 0.2);
+      --yellow: #fbbf24;
+      --yellow-dim: rgba(251, 191, 36, 0.2);
+      --pink: #f472b6;
+      --pink-dim: rgba(244, 114, 182, 0.2);
+      --purple: #a78bfa;
+      --purple-dim: rgba(167, 139, 250, 0.2);
+      --blue: #38bdf8;
+      --blue-dim: rgba(56, 189, 248, 0.2);
+      --orange: #fb923c;
+      --orange-dim: rgba(251, 146, 60, 0.2);
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      width: 240px;
+      min-height: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .p { padding: 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+
+    .h { display: flex; align-items: center; justify-content: space-between; }
+
+    .b { display: flex; align-items: center; gap: 8px; }
+
+    .i {
+      width: 26px; height: 26px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .i svg { width: 13px; height: 13px; fill: var(--text-3); }
+
+    .trash {
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .trash svg { width: 14px; height: 14px; fill: var(--text-3); }
+
+    .trash:hover { background: rgba(239, 68, 68, 0.15); }
+    .trash:hover svg { fill: #ef4444; }
+
+    .n { font-size: 13px; font-weight: 600; letter-spacing: -0.2px; }
+
+    .s {
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    .s.on { color: var(--green); background: var(--green-dim); }
+
+    .t {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .t:hover { border-color: var(--green); box-shadow: 0 0 15px var(--green-dim); transform: scale(1.02); }
+
+    .t.active { border-color: var(--green); box-shadow: 0 0 20px var(--green-dim); }
+
+    .t.active:hover { border-color: var(--green); box-shadow: 0 0 20px var(--green-dim); }
+
+    .tl { font-size: 12px; font-weight: 500; }
+
+    .sw {
+      width: 36px; height: 20px;
+      background: var(--border);
+      border-radius: 10px;
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .sw::after {
+      content: ''; position: absolute;
+      width: 14px; height: 14px;
+      background: var(--text-2);
+      border-radius: 50%;
+      top: 3px; left: 3px;
+      transition: transform 0.3s cubic-bezier(0.68, -0.1, 0.32, 1.1), background 0.3s;
+    }
+
+    .sw.on { background: var(--green); }
+    .sw.on::after { transform: translateX(16px); background: var(--bg); }
+
+    .g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+
+    .st {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 6px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .st:hover { transform: scale(1.05); }
+    .st.saved:hover { border-color: var(--green); box-shadow: 0 0 12px var(--green-dim); }
+    .st.skipped:hover { border-color: var(--blue); box-shadow: 0 0 12px var(--blue-dim); }
+    .st.ads:hover { border-color: var(--orange); box-shadow: 0 0 12px var(--orange-dim); }
+
+    .sv { font-size: 13px; font-weight: 600; letter-spacing: -0.3px; }
+    .sl { font-size: 7px; color: var(--text-3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.6px; }
+
+    .d { position: relative; }
+
+    .db {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-select:hover .db { border-color: var(--purple); box-shadow: 0 0 12px var(--purple-dim); }
+
+    .db:hover { background: var(--card-hover); transform: scale(1.02); }
+    .db span { font-size: 11px; color: var(--text-2); }
+    .db svg { width: 14px; height: 14px; fill: var(--text-3); transition: transform 0.3s; }
+    .db.open svg { transform: rotate(180deg); }
+
+    .dm {
+      position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      max-height: 72px;
+      overflow-y: auto;
+      opacity: 0; transform: translateY(-6px) scale(0.98);
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+    }
+
+    .dm.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+    .o { padding: 8px 12px; font-size: 11px; color: var(--text-2); cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .o:hover { background: var(--card-hover); color: var(--text); }
+    .o.sel { color: var(--text); }
+
+    .dm::-webkit-scrollbar { width: 4px; }
+    .dm::-webkit-scrollbar-track { background: var(--card); }
+    .dm::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .a { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+    .lk {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      text-decoration: none;
+      font-size: 10px;
+      color: var(--text-3);
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lk:hover { color: var(--text-2); border-color: #3f3f46; transform: scale(1.05); }
+    .lk svg { width: 13px; height: 13px; fill: currentColor; position: relative; z-index: 1; }
+    .lk-gh:hover { border-color: var(--yellow); box-shadow: 0 0 15px var(--yellow-dim); }
+    .lk-kofi:hover { border-color: var(--pink); box-shadow: 0 0 15px var(--pink-dim); }
+
+    .f { text-align: center; font-size: 7px; color: #27272a; letter-spacing: 0.3px; }
+  </style>
+</head>
+
+<body>
+  <div class="p">
+    <div class="h">
+      <div class="b">
+        <img class="i" src="assets/logo.png" alt="Skipix" style="width:26px;height:26px;border-radius:7px;border:1px solid var(--border);object-fit:contain;background:var(--card);">
+        <span class="n">Skipix</span>
+      </div>
+      <div class="b">
+        <div class="trash" id="trash" title="Clear Stats">
+          <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </div>
+        <span class="s on" id="st">ON</span>
+      </div>
+    </div>
+
+    <div class="t" id="tc">
+      <span class="tl" id="tl">Skip Ads</span>
+      <div class="sw on" id="sw"></div>
+    </div>
+
+    <div class="g">
+      <div class="st saved">
+        <div class="sv" id="tm">0s</div>
+        <div class="sl" id="sl">Saved</div>
+      </div>
+      <div class="st skipped">
+        <div class="sv" id="sk">0</div>
+        <div class="sl" id="sl2">Skipped</div>
+      </div>
+      <div class="st ads">
+        <div class="sv" id="ad">0</div>
+        <div class="sl" id="sl3">Ads</div>
+      </div>
+    </div>
+
+    <div class="d lang-select" id="dd">
+      <div class="db" id="db">
+        <span id="lt">English</span>
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </div>
+      <div class="dm" id="dm">
+        <div class="o sel" data-lang="en">English</div>
+        <div class="o" data-lang="es">Español</div>
+        <div class="o" data-lang="fr">Français</div>
+        <div class="o" data-lang="de">Deutsch</div>
+        <div class="o" data-lang="ja">日本語</div>
+        <div class="o" data-lang="ko">한국어</div>
+        <div class="o" data-lang="zh">中文</div>
+        <div class="o" data-lang="pt">Português</div>
+      </div>
+    </div>
+
+    <div class="a">
+      <a href="https://github.com/InlitX/skipix" target="_blank" class="lk lk-gh">
+        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://ko-fi.com" target="_blank" class="lk lk-kofi">
+        <svg viewBox="0 0 24 24"><path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z" fill="currentColor"/></svg>
+        Ko-fi
+      </a>
+    </div>
+
+    <div class="f">v1.0.0</div>
+  </div>
+
+  <script src="js/skipix.js"></script>
+</body>
+</html>

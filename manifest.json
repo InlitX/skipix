@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Skipix",
+  "version": "1.0.0",
+  "description": "Automatically skip Netflix ads and recover your time",
+  "icons": {
+    "16": "assets/logo.png",
+    "48": "assets/logo.png",
+    "128": "assets/logo.png"
+  },
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["*://*.netflix.com/*"],
+  "action": {
+    "default_popup": "skipix.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.netflix.com/*"],
+      "js": ["js/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "js/background.js",
+    "type": "module"
+  }
+}
